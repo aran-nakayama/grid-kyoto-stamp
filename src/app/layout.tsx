@@ -14,7 +14,8 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: SITE_NAME,
   description: SITE_DESCRIPTION,
-  manifest: "/manifest.json",
+  // metadata.manifest には basePath が自動付与されないため明示的に付ける
+  manifest: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/manifest.json`,
 };
 
 export const viewport: Viewport = {

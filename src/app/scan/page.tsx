@@ -27,7 +27,7 @@ export default function ScanPage() {
           token = paramToken;
         } else {
           // Legacy format: /stamp/{token}
-          const match = url.pathname.match(/(?:\/kyoto-local-stamprally)?\/stamp\/(.+)$/);
+          const match = url.pathname.match(/(?:\/grid-kyoto-stamp)?\/stamp\/(.+)$/);
           if (match) token = match[1];
         }
       } catch {

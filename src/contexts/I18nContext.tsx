@@ -12,7 +12,7 @@ interface I18nContextType {
 
 const I18nContext = createContext<I18nContextType | null>(null);
 
-const LOCALE_STORAGE_KEY = "kyoto-stamprally-locale";
+const LOCALE_STORAGE_KEY = "grid-kyoto-stamp-locale";
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("ja");

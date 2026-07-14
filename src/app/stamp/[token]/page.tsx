@@ -1,8 +1,8 @@
-import { shops } from "@/data/shops";
+import { streets } from "@/data/streets";
 import { RedirectToStamp } from "./RedirectToStamp";
 
 export function generateStaticParams() {
-  return shops.map((shop) => ({ token: shop.stampToken }));
+  return streets.map((street) => ({ token: street.stampToken }));
 }
 
 export default async function StampTokenPage({

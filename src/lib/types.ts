@@ -1,20 +1,18 @@
-export type ShopCategory = "cafe" | "bar" | "restaurant";
-
-export interface Shop {
+export interface Street {
   id: string;
   name: string;
-  category: ShopCategory;
+  nameEn: string;
+  theme: string;
+  themeEn: string;
   description: string;
-  address: string;
-  lat: number;
-  lng: number;
-  openingHours: string;
-  closedDays: string;
-  image: string;
+  descriptionEn: string;
+  emoji: string;
+  /** スタンプやアクセントに使うストリートのテーマカラー */
+  color: string;
   stampToken: string;
 }
 
 export interface StampRecord {
-  shopId: string;
+  streetId: string;
   acquiredAt: string;
 }

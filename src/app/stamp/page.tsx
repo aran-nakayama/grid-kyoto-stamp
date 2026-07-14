@@ -2,11 +2,11 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { findShopByToken } from "@/lib/stamps";
+import { findStreetByToken } from "@/lib/stamps";
 import { useStamps } from "@/hooks/useStamps";
-import { useShops } from "@/hooks/useShops";
 import { useI18n } from "@/contexts/I18nContext";
-import { Shop } from "@/lib/types";
+import { streets, streetText } from "@/data/streets";
+import { Street } from "@/lib/types";
 
 type StampResult = "success" | "already" | "invalid";
 
@@ -14,22 +14,21 @@ function StampContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
-  const { shops, isLoaded: shopsLoaded } = useShops();
-  const { addStamp, hasStamp, isLoaded } = useStamps(shops);
-  const { t } = useI18n();
+  const { addStamp, hasStamp, isLoaded } = useStamps();
+  const { t, locale } = useI18n();
   const [result, setResult] = useState<StampResult | null>(null);
-  const [shop, setShop] = useState<Shop | null>(null);
+  const [street, setStreet] = useState<Street | null>(null);
 
   useEffect(() => {
-    if (!isLoaded || !shopsLoaded || !token) return;
+    if (!isLoaded || !token) return;
 
-    const found = findShopByToken(token, shops);
+    const found = findStreetByToken(token, streets);
     if (!found) {
       setResult("invalid");
       return;
     }
 
-    setShop(found);
+    setStreet(found);
 
     if (hasStamp(found.id)) {
       setResult("already");
@@ -37,7 +36,7 @@ function StampContent() {
       addStamp(found.id);
       setResult("success");
     }
-  }, [token, isLoaded, shopsLoaded, shops, addStamp, hasStamp]);
+  }, [token, isLoaded, addStamp, hasStamp]);
 
   useEffect(() => {
     if (result === "success" || result === "already") {
@@ -75,15 +74,22 @@ function StampContent() {
     );
   }
 
+  const name = street ? streetText(street, locale).name : "";
+
   return (
     <div className="flex items-center justify-center min-h-screen px-4">
       <div className="text-center max-w-sm">
         {result === "success" ? (
           <>
-            <div className="text-6xl mb-4 animate-bounce">🎉</div>
+            <div className="text-6xl mb-4 animate-bounce">
+              {street?.emoji ?? "🎉"}
+            </div>
             <h1 className="text-2xl font-bold mb-2">{t.stamp.success}</h1>
-            <p className="text-lg font-medium text-primary mb-1">
-              {shop?.name}
+            <p
+              className="text-lg font-medium mb-1"
+              style={street ? { color: street.color } : undefined}
+            >
+              {name}
             </p>
             <p className="text-muted mb-6">{t.stamp.successDesc}</p>
           </>
@@ -91,8 +97,11 @@ function StampContent() {
           <>
             <div className="text-5xl mb-4">✅</div>
             <h1 className="text-xl font-bold mb-2">{t.stamp.already}</h1>
-            <p className="text-lg font-medium text-primary mb-1">
-              {shop?.name}
+            <p
+              className="text-lg font-medium mb-1"
+              style={street ? { color: street.color } : undefined}
+            >
+              {name}
             </p>
             <p className="text-muted mb-6">{t.stamp.alreadyDesc}</p>
           </>

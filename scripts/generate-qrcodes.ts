@@ -1,5 +1,5 @@
 import QRCode from "qrcode";
-import { shops } from "../src/data/shops";
+import { streets } from "../src/data/streets";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -11,9 +11,9 @@ async function main() {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 
-  for (const shop of shops) {
-    const url = `${BASE_URL}/stamp/${shop.stampToken}`;
-    const outputPath = path.join(OUTPUT_DIR, `${shop.id}.png`);
+  for (const street of streets) {
+    const url = `${BASE_URL}/stamp/${street.stampToken}`;
+    const outputPath = path.join(OUTPUT_DIR, `${street.id}.png`);
 
     await QRCode.toFile(outputPath, url, {
       width: 400,
@@ -21,10 +21,10 @@ async function main() {
       color: { dark: "#2d2320", light: "#ffffff" },
     });
 
-    console.log(`Generated: ${shop.id} - ${shop.name}`);
+    console.log(`Generated: ${street.id} - ${street.name} -> ${url}`);
   }
 
-  console.log(`\nDone! ${shops.length} QR codes saved to ${OUTPUT_DIR}`);
+  console.log(`\nDone! ${streets.length} QR codes saved to ${OUTPUT_DIR}`);
 }
 
 main().catch(console.error);

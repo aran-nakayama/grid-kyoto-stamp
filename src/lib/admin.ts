@@ -1,5 +1,5 @@
-const ADMIN_SESSION_KEY = "kyoto-stamprally-admin-session";
-const ADMIN_PASSWORD_HASH = "35ed7d1f3065da77b611ee07dfcd87127c95576f00d3d28b79e4ae7a6407fdac";
+const ADMIN_SESSION_KEY = "grid-kyoto-stamp-admin-session";
+const ADMIN_PASSWORD_HASH = "89a047a81917e001cae07e11a19d20307745ac39c2f547eaccc2244ccdab20da";
 
 async function sha256(text: string): Promise<string> {
   const encoder = new TextEncoder();

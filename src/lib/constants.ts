@@ -1,3 +1,4 @@
-export const STORAGE_KEY = "kyoto-stamprally-stamps";
-export const SITE_NAME = "京都スタンプラリー";
-export const SITE_DESCRIPTION = "京都のローカルなカフェ・バー・レストランを巡るスタンプラリー";
+export const STORAGE_KEY = "grid-kyoto-stamp-stamps";
+export const SITE_NAME = "GRID KYOTO スタンプラリー";
+export const SITE_DESCRIPTION =
+  "GRID KYOTO 〜京都まちの文化祭〜 5つのストリートを巡るスタンプラリー";

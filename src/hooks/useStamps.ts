@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { StampRecord, Shop } from "@/lib/types";
+import { StampRecord } from "@/lib/types";
+import { streets } from "@/data/streets";
 import { getStamps, addStamp as addStampToStorage } from "@/lib/stamps";
 
-export function useStamps(shops: Shop[]) {
+export function useStamps() {
   const [stamps, setStamps] = useState<StampRecord[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -13,8 +14,8 @@ export function useStamps(shops: Shop[]) {
     setIsLoaded(true);
   }, []);
 
-  const addStamp = useCallback((shopId: string): boolean => {
-    const success = addStampToStorage(shopId);
+  const addStamp = useCallback((streetId: string): boolean => {
+    const success = addStampToStorage(streetId);
     if (success) {
       setStamps(getStamps());
     }
@@ -22,18 +23,20 @@ export function useStamps(shops: Shop[]) {
   }, []);
 
   const hasStamp = useCallback(
-    (shopId: string): boolean => {
-      return stamps.some((s) => s.shopId === shopId);
+    (streetId: string): boolean => {
+      return stamps.some((s) => s.streetId === streetId);
     },
     [stamps]
   );
 
   const progress = {
     acquired: stamps.length,
-    total: shops.length,
+    total: streets.length,
   };
 
-  const isComplete = stamps.length === shops.length;
+  // isLoaded を条件に含めないと、プリレンダリング時（0/0）にコンプリート表示が出てしまう
+  const isComplete =
+    isLoaded && streets.length > 0 && stamps.length >= streets.length;
 
   return { stamps, isLoaded, addStamp, hasStamp, progress, isComplete };
 }

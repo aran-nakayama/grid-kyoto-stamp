@@ -1,4 +1,4 @@
-import { StampRecord, Shop } from "./types";
+import { StampRecord, Street } from "./types";
 import { STORAGE_KEY } from "./constants";
 
 export function getStamps(): StampRecord[] {
@@ -16,26 +16,22 @@ function saveStamps(stamps: StampRecord[]): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(stamps));
 }
 
-export function addStamp(shopId: string): boolean {
+export function addStamp(streetId: string): boolean {
   const stamps = getStamps();
-  if (stamps.some((s) => s.shopId === shopId)) return false;
-  stamps.push({ shopId, acquiredAt: new Date().toISOString() });
+  if (stamps.some((s) => s.streetId === streetId)) return false;
+  stamps.push({ streetId, acquiredAt: new Date().toISOString() });
   saveStamps(stamps);
   return true;
 }
 
-export function hasStamp(shopId: string): boolean {
-  return getStamps().some((s) => s.shopId === shopId);
+export function hasStamp(streetId: string): boolean {
+  return getStamps().some((s) => s.streetId === streetId);
 }
 
 export function clearStamps(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-export function getProgress(shops: Shop[]): { acquired: number; total: number } {
-  return { acquired: getStamps().length, total: shops.length };
-}
-
-export function findShopByToken(token: string, shops: Shop[]): Shop | null {
-  return shops.find((s) => s.stampToken === token) ?? null;
+export function findStreetByToken(token: string, streets: Street[]): Street | null {
+  return streets.find((s) => s.stampToken === token) ?? null;
 }

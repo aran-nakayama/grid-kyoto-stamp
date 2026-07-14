@@ -5,7 +5,7 @@ export interface TranslationDict {
   siteDescription: string;
   nav: {
     stamps: string;
-    shops: string;
+    streets: string;
     scan: string;
     map: string;
   };
@@ -18,27 +18,14 @@ export interface TranslationDict {
     complete: string;
     completeMessage: string;
   };
-  category: {
-    all: string;
-    cafe: string;
-    bar: string;
-    restaurant: string;
-  };
-  shops: {
+  streets: {
     title: string;
-    count: string; // "{count}件のお店" — use {count} placeholder
-  };
-  shopDetail: {
-    introduction: string;
-    openingHours: string;
-    closedDays: string;
-    address: string;
-    openInGoogleMaps: string;
-    backToList: string;
-    stampAcquired: string;
-    stampNotAcquired: string;
-    stampAcquiredDesc: string;
-    stampNotAcquiredDesc: string;
+    subtitle: string;
+    themeLabel: string;
+    acquired: string;
+    notAcquired: string;
+    acquiredDesc: string;
+    notAcquiredDesc: string;
   };
   scan: {
     title: string;
@@ -61,8 +48,10 @@ export interface TranslationDict {
   map: {
     title: string;
     subtitle: string;
-    acquired: string;
-    viewDetail: string;
+    venuePlaza: string;
+    venuePlazaDesc: string;
+    venueZest: string;
+    venueZestDesc: string;
   };
   admin: {
     title: string;
@@ -71,24 +60,7 @@ export interface TranslationDict {
     loginButton: string;
     wrongPassword: string;
     logout: string;
-    dashboard: string;
-    shopManagement: string;
     qrCodes: string;
-    translations: string;
-    exportImport: string;
-    addShop: string;
-    editShop: string;
-    deleteShop: string;
-    deleteConfirm: string;
-    save: string;
-    cancel: string;
-    reset: string;
-    resetConfirm: string;
-    export: string;
-    import: string;
-    shopCount: string;
     generate: string;
-    downloadAll: string;
-    noTranslation: string;
   };
 }

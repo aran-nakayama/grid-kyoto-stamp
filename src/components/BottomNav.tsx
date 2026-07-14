@@ -12,7 +12,7 @@ export function BottomNav() {
 
   const tabs = [
     { href: "/", label: t.nav.stamps, icon: StampIcon },
-    { href: "/shops", label: t.nav.shops, icon: ListIcon },
+    { href: "/streets", label: t.nav.streets, icon: ListIcon },
     { href: "/scan", label: t.nav.scan, icon: CameraIcon },
     { href: "/map", label: t.nav.map, icon: MapIcon },
   ] as const;

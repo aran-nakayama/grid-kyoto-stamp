@@ -1,19 +1,18 @@
 "use client";
 
 import { useStamps } from "@/hooks/useStamps";
-import { useShops } from "@/hooks/useShops";
 import { useI18n } from "@/contexts/I18nContext";
-import { Shop } from "@/lib/types";
+import { Street } from "@/lib/types";
+import { streets } from "@/data/streets";
 import { StampSlot } from "./StampSlot";
 import { ProgressBar } from "./ProgressBar";
 
 interface StampGridProps {
-  onSelectShop: (shop: Shop) => void;
+  onSelectStreet: (street: Street) => void;
 }
 
-export function StampGrid({ onSelectShop }: StampGridProps) {
-  const { shops } = useShops();
-  const { hasStamp, progress, isComplete, isLoaded } = useStamps(shops);
+export function StampGrid({ onSelectStreet }: StampGridProps) {
+  const { hasStamp, progress, isComplete, isLoaded } = useStamps();
   const { t } = useI18n();
 
   return (
@@ -30,13 +29,13 @@ export function StampGrid({ onSelectShop }: StampGridProps) {
         </div>
       )}
 
-      <div className="grid grid-cols-4 gap-4 justify-items-center">
-        {shops.map((shop) => (
+      <div className="flex flex-wrap justify-center gap-x-6 gap-y-8 py-2">
+        {streets.map((street) => (
           <StampSlot
-            key={shop.id}
-            shop={shop}
-            acquired={isLoaded ? hasStamp(shop.id) : false}
-            onSelect={onSelectShop}
+            key={street.id}
+            street={street}
+            acquired={isLoaded ? hasStamp(street.id) : false}
+            onSelect={onSelectStreet}
           />
         ))}
       </div>

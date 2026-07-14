@@ -2,16 +2,15 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useI18n } from "@/contexts/I18nContext";
-import { useShops } from "@/hooks/useShops";
+import { streets } from "@/data/streets";
 import QRCode from "qrcode";
 
 export function AdminQrCodes() {
   const { t } = useI18n();
-  const { shops } = useShops();
   const [baseUrl, setBaseUrl] = useState("");
 
   useEffect(() => {
-    setBaseUrl(`${window.location.origin}/kyoto-local-stamprally`);
+    setBaseUrl(`${window.location.origin}${process.env.NEXT_PUBLIC_BASE_PATH || ""}`);
   }, []);
 
   return (
@@ -19,8 +18,13 @@ export function AdminQrCodes() {
       <h2 className="text-xl font-bold">{t.admin.qrCodes}</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {shops.map((shop) => (
-          <QrCard key={shop.id} name={shop.name} url={`${baseUrl}/stamp?token=${encodeURIComponent(shop.stampToken)}`} generateLabel={t.admin.generate} />
+        {streets.map((street) => (
+          <QrCard
+            key={street.id}
+            name={`${street.emoji} ${street.name}`}
+            url={`${baseUrl}/stamp?token=${encodeURIComponent(street.stampToken)}`}
+            generateLabel={t.admin.generate}
+          />
         ))}
       </div>
     </div>
