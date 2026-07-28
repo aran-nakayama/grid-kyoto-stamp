@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { findStreetByToken } from "@/lib/stamps";
 import { useStamps } from "@/hooks/useStamps";
@@ -18,9 +18,14 @@ function StampContent() {
   const { t, locale } = useI18n();
   const [result, setResult] = useState<StampResult | null>(null);
   const [street, setStreet] = useState<Street | null>(null);
+  // addStamp が stamps を更新すると hasStamp の identity が変わりこの effect が再実行される。
+  // 判定をトークンごとに一度だけに固定しないと、獲得直後に「取得済み」で上書きされる
+  const processedToken = useRef<string | null>(null);
 
   useEffect(() => {
     if (!isLoaded || !token) return;
+    if (processedToken.current === token) return;
+    processedToken.current = token;
 
     const found = findStreetByToken(token, streets);
     if (!found) {
