@@ -11,6 +11,7 @@ import {
 } from "@/lib/admin";
 import { useI18n } from "@/contexts/I18nContext";
 import { AdminQrCodes } from "@/components/admin/AdminQrCodes";
+import { AdminStampReset } from "@/components/admin/AdminStampReset";
 
 export default function AdminPage() {
   const { t } = useI18n();
@@ -81,7 +82,8 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-6">
+      <main className="max-w-5xl mx-auto px-4 py-6 space-y-8">
+        <AdminStampReset />
         <AdminQrCodes />
       </main>
     </div>

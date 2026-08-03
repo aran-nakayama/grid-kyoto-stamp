@@ -10,13 +10,20 @@ export const en: TranslationDict = {
   },
   home: {
     title: "GRID KYOTO",
-    subtitle: "Kyoto's city culture festival — explore the five streets",
+    subtitle: "🎃 Kyoto's city culture festival — explore the five streets",
+    sheetTitle: "STAMP SHEET",
   },
   progress: {
     label: "Stamps",
-    complete: "Complete!",
+    complete: "Trick or Treat!",
     completeMessage:
-      "You've visited all five streets! Congratulations!",
+      "You've visited all five streets. Happy Halloween!",
+  },
+  celebrate: {
+    message: "You visited all five streets!",
+    sub: "Happy Halloween!",
+    close: "See my stamp sheet",
+    replay: "Watch again",
   },
   streets: {
     themeLabel: "Theme",
@@ -61,5 +68,14 @@ export const en: TranslationDict = {
     logout: "Log out",
     qrCodes: "Street QR Codes",
     generate: "Generate",
+    stampStatus: "Stamps on this device",
+    noStamps: "No stamps collected yet",
+    resetStamps: "Reset stamps",
+    resetConfirm: "Really delete them?",
+    resetDo: "Delete",
+    resetCancel: "Cancel",
+    resetDone: "Stamps have been reset",
+    resetNote:
+      "This only clears stamps saved on this device. Other visitors are unaffected.",
   },
 };

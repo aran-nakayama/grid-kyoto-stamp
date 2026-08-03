@@ -8,16 +8,16 @@
 
    | ファイル名 | ストリート | 仮デザイン |
    | --- | --- | --- |
-   | `street-01-a.png` / `street-01-b.png` | 環境 | ♻️ リサイクル / 🌳 みどり |
-   | `street-02-a.png` / `street-02-b.png` | 国際 | 🌍 ちきゅう / ✈️ ひこうき |
-   | `street-03-a.png` / `street-03-b.png` | 福祉 | 🤝 手をつなぐ / 🌻 ひまわり |
-   | `street-04-a.png` / `street-04-b.png` | 子育て | 🧸 くまさん / 🎈 ふうせん |
-   | `street-05-a.png` / `street-05-b.png` | 文化・アート | 🎨 パレット / 🎭 えんげき |
+   | `street-01-a.png` / `street-01-b.png` | 環境 | 🎃 かぼちゃ / 🌰 どんぐり |
+   | `street-02-a.png` / `street-02-b.png` | 国際 | 🦇 こうもり / 🧙 まじょ |
+   | `street-03-a.png` / `street-03-b.png` | 福祉 | 🍬 キャンディ / 👻 おばけ |
+   | `street-04-a.png` / `street-04-b.png` | 子育て | 🧁 カップケーキ / 🍭 ロリポップ |
+   | `street-05-a.png` / `street-05-b.png` | 文化・アート | 🎭 かめん / 🌙 おつきさま |
 
 2. `src/data/streets.ts` の各デザインに `image` を追加する:
 
    ```ts
-   { id: "a", name: "リサイクル", nameEn: "Recycle", emoji: "♻️", color: "#10b981",
+   { id: "a", name: "かぼちゃ", nameEn: "Pumpkin", emoji: "🎃", color: "#ea580c",
      image: "/stamps/street-01-a.png" },
    ```
 

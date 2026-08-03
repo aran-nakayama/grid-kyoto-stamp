@@ -18,6 +18,9 @@ export interface Street {
   id: string;
   name: string;
   nameEn: string;
+  /** スタンプシートなど狭い場所で使う短い名前 */
+  shortName: string;
+  shortNameEn: string;
   theme: string;
   themeEn: string;
   description: string;

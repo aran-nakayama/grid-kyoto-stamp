@@ -4,8 +4,8 @@
   "description": "GRID KYOTO 〜京都まちの文化祭〜 5つのストリートを巡るスタンプラリー",
   "start_url": "/grid-kyoto-stamp/",
   "display": "standalone",
-  "theme_color": "#b91c1c",
-  "background_color": "#faf8f5",
+  "theme_color": "#2a1a35",
+  "background_color": "#fdf5ea",
   "icons": [
     {
       "src": "/grid-kyoto-stamp/icons/icon-192.png",

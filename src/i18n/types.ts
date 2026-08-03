@@ -10,11 +10,19 @@ export interface TranslationDict {
   home: {
     title: string;
     subtitle: string;
+    sheetTitle: string;
   };
   progress: {
     label: string;
     complete: string;
     completeMessage: string;
+  };
+  /** 全部集めたときのお祝い画面 */
+  celebrate: {
+    message: string;
+    sub: string;
+    close: string;
+    replay: string;
   };
   /** スタンプ詳細（ストリート情報）で使う文言 */
   streets: {
@@ -57,5 +65,13 @@ export interface TranslationDict {
     logout: string;
     qrCodes: string;
     generate: string;
+    stampStatus: string;
+    noStamps: string;
+    resetStamps: string;
+    resetConfirm: string;
+    resetDo: string;
+    resetCancel: string;
+    resetDone: string;
+    resetNote: string;
   };
 }

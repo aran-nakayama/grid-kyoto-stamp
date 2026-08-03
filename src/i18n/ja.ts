@@ -9,12 +9,20 @@ export const ja: TranslationDict = {
   },
   home: {
     title: "GRID KYOTO",
-    subtitle: "京都まちの文化祭 〜5つのストリートを巡ろう〜",
+    subtitle: "🎃 京都まちの文化祭 〜5つのストリートを巡ろう〜",
+    sheetTitle: "スタンプシート",
   },
   progress: {
     label: "スタンプ",
-    complete: "コンプリート！",
-    completeMessage: "5つのストリートをすべて巡りました！おめでとうございます！",
+    complete: "Trick or Treat！",
+    completeMessage:
+      "5つのストリートをすべて巡りました！ハッピーハロウィン！",
+  },
+  celebrate: {
+    message: "5つのストリートを ぜんぶまわったね！",
+    sub: "ハッピーハロウィン！",
+    close: "スタンプシートを見る",
+    replay: "もういちど見る",
   },
   streets: {
     themeLabel: "テーマ",
@@ -58,5 +66,14 @@ export const ja: TranslationDict = {
     logout: "ログアウト",
     qrCodes: "ストリートQRコード",
     generate: "生成",
+    stampStatus: "この端末のスタンプ",
+    noStamps: "まだスタンプはありません",
+    resetStamps: "スタンプをリセット",
+    resetConfirm: "本当に消しますか？",
+    resetDo: "消す",
+    resetCancel: "やめる",
+    resetDone: "リセットしました",
+    resetNote:
+      "この端末に保存されたスタンプだけを消します。他の来場者のスタンプには影響しません。",
   },
 };

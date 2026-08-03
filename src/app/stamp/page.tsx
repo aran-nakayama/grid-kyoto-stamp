@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { Suspense, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -14,13 +15,24 @@ import { useStamps } from "@/hooks/useStamps";
 import { useI18n } from "@/contexts/I18nContext";
 import { findDesign, streetText } from "@/data/streets";
 import { StampFace } from "@/components/StampFace";
+import { CompleteCelebration } from "@/components/CompleteCelebration";
+
+// スタンプを押した瞬間に飛び散るお菓子とキラキラ
+const SPARKLES = [
+  { emoji: "✨", dx: "-70px", dy: "-58px", spin: "-25deg" },
+  { emoji: "🍬", dx: "68px", dy: "-52px", spin: "35deg" },
+  { emoji: "🦇", dx: "-82px", dy: "16px", spin: "-15deg" },
+  { emoji: "🍭", dx: "78px", dy: "26px", spin: "30deg" },
+  { emoji: "⭐", dx: "-34px", dy: "-84px", spin: "20deg" },
+  { emoji: "🍫", dx: "36px", dy: "70px", spin: "-30deg" },
+];
 
 function StampContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
   const { t, locale } = useI18n();
-  const { designIdOf } = useStamps();
+  const { designIdOf, isComplete } = useStamps();
 
   // 判定はストア側で一度だけ行い、ここでは結果を購読するだけにする。
   // effect 内で状態を更新しないので、獲得直後に「取得済み」で上書きされることがない
@@ -39,13 +51,17 @@ function StampContent() {
     startClaim(token);
   }, [token]);
 
-  // 絵柄の選択待ちの間は自動遷移しない
+  // 5つ目を押したときはお祝い画面を見せるので、自動遷移しない
+  const celebrating = result === "success" && isComplete;
+
+  // 絵柄の選択待ちの間も自動遷移しない
   useEffect(() => {
+    if (celebrating) return;
     if (result === "success" || result === "already") {
       const timer = setTimeout(() => router.push("/"), 3000);
       return () => clearTimeout(timer);
     }
-  }, [result, router]);
+  }, [result, router, celebrating]);
 
   if (!result) {
     return (
@@ -79,6 +95,11 @@ function StampContent() {
   const street = findStreetByToken(token);
   const name = street ? streetText(street, locale).name : "";
 
+  // 5つ目を押した瞬間が一番の盛り上がりどころなので、全画面でお祝いする
+  if (celebrating) {
+    return <CompleteCelebration onClose={() => router.push("/")} />;
+  }
+
   // 未獲得のときは、どちらの絵柄にするか選んでもらう
   if (result === "choosing" && street) {
     return (
@@ -98,13 +119,17 @@ function StampContent() {
               <button
                 key={design.id}
                 onClick={() => completeClaim(token, design.id)}
-                className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
+                className="flex flex-col items-center gap-2 active:scale-90 transition-transform"
               >
+                {/* ふわふわ動かしてタップを誘う。2つの動きをずらして交互に見せる */}
                 <StampFace
                   design={design}
-                  className="w-28 h-28 shadow-lg"
-                  emojiClassName="text-5xl"
-                  style={{ boxShadow: `0 10px 15px -3px ${design.color}66` }}
+                  className="w-28 h-28 border-4 border-white shadow-lg animate-soft-float"
+                  emojiClassName="text-6xl"
+                  style={{
+                    boxShadow: `0 10px 18px -4px ${design.color}80`,
+                    animationDelay: design.id === "b" ? "1.2s" : "0s",
+                  }}
                 />
                 <span className="text-sm font-medium">
                   {locale === "en" ? design.nameEn : design.name}
@@ -124,14 +149,34 @@ function StampContent() {
       <div className="text-center max-w-sm">
         {design && (
           <div className="flex justify-center mb-4">
-            <StampFace
-              design={design}
-              className={`w-24 h-24 shadow-lg ${
-                result === "success" ? "animate-bounce" : ""
-              }`}
-              emojiClassName="text-4xl"
-              style={{ boxShadow: `0 10px 15px -3px ${design.color}66` }}
-            />
+            <div className="relative">
+              <StampFace
+                design={design}
+                className={`w-28 h-28 border-4 border-white shadow-lg ${
+                  result === "success" ? "animate-stamp-press" : ""
+                }`}
+                emojiClassName="text-6xl"
+                style={{ boxShadow: `0 10px 20px -4px ${design.color}80` }}
+              />
+              {result === "success" &&
+                SPARKLES.map((s, i) => (
+                  <span
+                    key={i}
+                    aria-hidden
+                    className="absolute left-1/2 top-1/2 text-2xl animate-sparkle pointer-events-none"
+                    style={
+                      {
+                        "--dx": s.dx,
+                        "--dy": s.dy,
+                        "--spin": s.spin,
+                        animationDelay: `${300 + i * 60}ms`,
+                      } as CSSProperties
+                    }
+                  >
+                    {s.emoji}
+                  </span>
+                ))}
+            </div>
           </div>
         )}
         <h1 className="text-2xl font-bold mb-2">
