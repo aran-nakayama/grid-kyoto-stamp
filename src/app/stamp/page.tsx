@@ -1,48 +1,45 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { findStreetByToken } from "@/lib/stamps";
+import {
+  completeClaim,
+  findStreetByToken,
+  getClaimOutcome,
+  getServerClaimOutcome,
+  startClaim,
+  subscribeStamps,
+} from "@/lib/stamps";
 import { useStamps } from "@/hooks/useStamps";
 import { useI18n } from "@/contexts/I18nContext";
-import { streets, streetText } from "@/data/streets";
-import { Street } from "@/lib/types";
-
-type StampResult = "success" | "already" | "invalid";
+import { findDesign, streetText } from "@/data/streets";
+import { StampFace } from "@/components/StampFace";
 
 function StampContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
-  const { addStamp, hasStamp, isLoaded } = useStamps();
   const { t, locale } = useI18n();
-  const [result, setResult] = useState<StampResult | null>(null);
-  const [street, setStreet] = useState<Street | null>(null);
-  // addStamp が stamps を更新すると hasStamp の identity が変わりこの effect が再実行される。
-  // 判定をトークンごとに一度だけに固定しないと、獲得直後に「取得済み」で上書きされる
-  const processedToken = useRef<string | null>(null);
+  const { designIdOf } = useStamps();
+
+  // 判定はストア側で一度だけ行い、ここでは結果を購読するだけにする。
+  // effect 内で状態を更新しないので、獲得直後に「取得済み」で上書きされることがない
+  const result = useSyncExternalStore(
+    subscribeStamps,
+    () => getClaimOutcome(token),
+    getServerClaimOutcome
+  );
+
+  // 開発時の effect 二重実行で判定がやり直されないよう、トークンごとに一度だけ処理する
+  const startedToken = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!isLoaded || !token) return;
-    if (processedToken.current === token) return;
-    processedToken.current = token;
+    if (!token || startedToken.current === token) return;
+    startedToken.current = token;
+    startClaim(token);
+  }, [token]);
 
-    const found = findStreetByToken(token, streets);
-    if (!found) {
-      setResult("invalid");
-      return;
-    }
-
-    setStreet(found);
-
-    if (hasStamp(found.id)) {
-      setResult("already");
-    } else {
-      addStamp(found.id);
-      setResult("success");
-    }
-  }, [token, isLoaded, addStamp, hasStamp]);
-
+  // 絵柄の選択待ちの間は自動遷移しない
   useEffect(() => {
     if (result === "success" || result === "already") {
       const timer = setTimeout(() => router.push("/"), 3000);
@@ -79,38 +76,76 @@ function StampContent() {
     );
   }
 
+  const street = findStreetByToken(token);
   const name = street ? streetText(street, locale).name : "";
+
+  // 未獲得のときは、どちらの絵柄にするか選んでもらう
+  if (result === "choosing" && street) {
+    return (
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <div className="text-center max-w-sm w-full">
+          <p
+            className="text-sm font-medium mb-1"
+            style={{ color: street.color }}
+          >
+            {name}
+          </p>
+          <h1 className="text-xl font-bold mb-2">{t.stamp.choose}</h1>
+          <p className="text-sm text-muted mb-8">{t.stamp.chooseDesc}</p>
+
+          <div className="flex justify-center gap-6">
+            {street.designs.map((design) => (
+              <button
+                key={design.id}
+                onClick={() => completeClaim(token, design.id)}
+                className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
+              >
+                <StampFace
+                  design={design}
+                  className="w-28 h-28 shadow-lg"
+                  emojiClassName="text-5xl"
+                  style={{ boxShadow: `0 10px 15px -3px ${design.color}66` }}
+                />
+                <span className="text-sm font-medium">
+                  {locale === "en" ? design.nameEn : design.name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const design = street ? findDesign(street, designIdOf(street.id)) : null;
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4">
       <div className="text-center max-w-sm">
-        {result === "success" ? (
-          <>
-            <div className="text-6xl mb-4 animate-bounce">
-              {street?.emoji ?? "🎉"}
-            </div>
-            <h1 className="text-2xl font-bold mb-2">{t.stamp.success}</h1>
-            <p
-              className="text-lg font-medium mb-1"
-              style={street ? { color: street.color } : undefined}
-            >
-              {name}
-            </p>
-            <p className="text-muted mb-6">{t.stamp.successDesc}</p>
-          </>
-        ) : (
-          <>
-            <div className="text-5xl mb-4">✅</div>
-            <h1 className="text-xl font-bold mb-2">{t.stamp.already}</h1>
-            <p
-              className="text-lg font-medium mb-1"
-              style={street ? { color: street.color } : undefined}
-            >
-              {name}
-            </p>
-            <p className="text-muted mb-6">{t.stamp.alreadyDesc}</p>
-          </>
+        {design && (
+          <div className="flex justify-center mb-4">
+            <StampFace
+              design={design}
+              className={`w-24 h-24 shadow-lg ${
+                result === "success" ? "animate-bounce" : ""
+              }`}
+              emojiClassName="text-4xl"
+              style={{ boxShadow: `0 10px 15px -3px ${design.color}66` }}
+            />
+          </div>
         )}
+        <h1 className="text-2xl font-bold mb-2">
+          {result === "success" ? t.stamp.success : t.stamp.already}
+        </h1>
+        <p
+          className="text-lg font-medium mb-1"
+          style={street ? { color: street.color } : undefined}
+        >
+          {name}
+        </p>
+        <p className="text-muted mb-6">
+          {result === "success" ? t.stamp.successDesc : t.stamp.alreadyDesc}
+        </p>
         <p className="text-sm text-muted">{t.stamp.redirecting}</p>
       </div>
     </div>

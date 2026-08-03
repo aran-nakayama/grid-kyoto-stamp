@@ -5,9 +5,7 @@ export const ja: TranslationDict = {
   siteDescription: "GRID KYOTO 〜京都まちの文化祭〜 5つのストリートを巡るスタンプラリー",
   nav: {
     stamps: "スタンプ",
-    streets: "ストリート",
     scan: "スキャン",
-    map: "会場マップ",
   },
   home: {
     title: "GRID KYOTO",
@@ -19,13 +17,13 @@ export const ja: TranslationDict = {
     completeMessage: "5つのストリートをすべて巡りました！おめでとうございます！",
   },
   streets: {
-    title: "ストリート",
-    subtitle: "5つのテーマストリート",
     themeLabel: "テーマ",
     acquired: "スタンプ獲得済み",
     notAcquired: "未獲得",
     acquiredDesc: "このストリートのスタンプは獲得済みです",
     notAcquiredDesc: "ストリートに設置されたQRコードを読み取ってスタンプを獲得しよう",
+    designLabel: "スタンプの絵柄",
+    changeDesign: "タップで絵柄を変更できます",
   },
   scan: {
     title: "QRスキャン",
@@ -34,8 +32,12 @@ export const ja: TranslationDict = {
     cameraError: "カメラエラー",
     cameraPermission:
       "カメラを起動できませんでした。カメラの使用を許可してください。",
+    cameraUnavailable:
+      "この接続ではカメラを利用できません。ブラウザの制限のため、暗号化された接続（https）でのみ動作します。公開サイトからお試しください。",
   },
   stamp: {
+    choose: "どちらのスタンプにしますか？",
+    chooseDesc: "好きな絵柄をタップして獲得しよう（あとから変更できます）",
     checking: "確認中...",
     success: "スタンプ獲得！",
     successDesc: "スタンプカードに追加されました！",
@@ -46,20 +48,13 @@ export const ja: TranslationDict = {
     backToTop: "トップに戻る",
     redirecting: "3秒後にスタンプカードへ移動します...",
   },
-  map: {
-    title: "会場マップ",
-    subtitle: "京都市役所前広場・ゼスト御池",
-    venuePlaza: "京都市役所前広場",
-    venuePlazaDesc: "メイン会場（5つのストリート）",
-    venueZest: "ゼスト御池地下街",
-    venueZestDesc: "会場",
-  },
   admin: {
     title: "管理画面",
     login: "管理者ログイン",
     password: "パスワード",
     loginButton: "ログイン",
     wrongPassword: "パスワードが正しくありません",
+    loginError: "ログイン処理に失敗しました。ページを再読み込みしてお試しください。",
     logout: "ログアウト",
     qrCodes: "ストリートQRコード",
     generate: "生成",

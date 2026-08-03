@@ -1,39 +1,45 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { isAdminAuthenticated, setAdminAuthenticated, verifyPassword, adminLogout } from "@/lib/admin";
+import { useState, useSyncExternalStore } from "react";
+import {
+  adminLogout,
+  getServerAdminAuthenticated,
+  isAdminAuthenticated,
+  setAdminAuthenticated,
+  subscribeAdminAuth,
+  verifyPassword,
+} from "@/lib/admin";
 import { useI18n } from "@/contexts/I18nContext";
 import { AdminQrCodes } from "@/components/admin/AdminQrCodes";
 
 export default function AdminPage() {
   const { t } = useI18n();
-  const [authenticated, setAuthenticated] = useState(false);
+  const authenticated = useSyncExternalStore(
+    subscribeAdminAuth,
+    isAdminAuthenticated,
+    getServerAdminAuthenticated
+  );
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setAuthenticated(isAdminAuthenticated());
-  }, []);
 
   const handleLogin = async () => {
-    const valid = await verifyPassword(password);
-    if (valid) {
-      setAdminAuthenticated();
-      setAuthenticated(true);
-      setError("");
-    } else {
-      setError(t.admin.wrongPassword);
+    try {
+      const valid = await verifyPassword(password);
+      if (valid) {
+        setAdminAuthenticated();
+        setError("");
+      } else {
+        setError(t.admin.wrongPassword);
+      }
+    } catch {
+      // 失敗を握りつぶすとボタンが無反応に見えてしまうため、必ず理由を表示する
+      setError(t.admin.loginError);
     }
   };
 
   const handleLogout = () => {
     adminLogout();
-    setAuthenticated(false);
   };
-
-  if (!mounted) return null;
 
   if (!authenticated) {
     return (

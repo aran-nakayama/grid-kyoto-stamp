@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { useI18n } from "@/contexts/I18nContext";
 
 interface QrScannerProps {
   onScan: (decodedText: string) => void;
 }
+
+// カメラAPIは「安全なコンテキスト」（https または localhost）でしか露出しない。
+// LAN IP 経由の http では navigator.mediaDevices ごと undefined になる
+const subscribeCameraSupport = () => () => {};
+const getCameraSupported = () =>
+  typeof navigator !== "undefined" &&
+  typeof navigator.mediaDevices?.getUserMedia === "function";
+const getServerCameraSupported = () => true;
 
 function safeStop(scanner: Html5Qrcode | null): void {
   if (!scanner) return;
@@ -19,14 +27,27 @@ function safeStop(scanner: Html5Qrcode | null): void {
 
 export function QrScanner({ onScan }: QrScannerProps) {
   const { t } = useI18n();
-  const [error, setError] = useState<string | null>(null);
+  const cameraSupported = useSyncExternalStore(
+    subscribeCameraSupport,
+    getCameraSupported,
+    getServerCameraSupported
+  );
+  // 翻訳済みの文言ではなく失敗フラグだけ持つ。
+  // これで起動処理が言語設定に依存しなくなり、言語切替でカメラが再起動しない
+  const [cameraFailed, setCameraFailed] = useState(false);
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const stateRef = useRef<"idle" | "starting" | "running" | "stopped">("idle");
 
   const onScanRef = useRef(onScan);
-  onScanRef.current = onScan;
+  // ref の書き換えは描画中ではなく effect で行う（カメラ起動より先に実行される）
+  useEffect(() => {
+    onScanRef.current = onScan;
+  }, [onScan]);
 
   useEffect(() => {
+    // カメラが使えない接続では起動を試みない（試みても必ず失敗する）
+    if (!cameraSupported) return;
+
     // ページ遷移時にvideoのplay()が中断されるとブラウザがunhandled rejectionを投げる。
     // html5-qrcodeライブラリ内部のpromiseなのでcatchできないため、ここで抑制する。
     function suppressAbort(e: PromiseRejectionEvent) {
@@ -68,7 +89,7 @@ export function QrScanner({ onScan }: QrScannerProps) {
         .catch((err: unknown) => {
           if (cancelled) return;
           if (err instanceof DOMException && err.name === "AbortError") return;
-          setError(t.scan.cameraPermission);
+          setCameraFailed(true);
         });
     }, 100);
 
@@ -85,14 +106,16 @@ export function QrScanner({ onScan }: QrScannerProps) {
         window.removeEventListener("unhandledrejection", suppressAbort);
       }, 1000);
     };
-  }, []);
+  }, [cameraSupported]);
 
-  if (error) {
+  if (!cameraSupported || cameraFailed) {
     return (
       <div className="text-center p-6">
         <p className="text-5xl mb-4">📷</p>
         <p className="text-primary font-medium mb-2">{t.scan.cameraError}</p>
-        <p className="text-sm text-muted">{error}</p>
+        <p className="text-sm text-muted">
+          {cameraSupported ? t.scan.cameraPermission : t.scan.cameraUnavailable}
+        </p>
       </div>
     );
   }

@@ -1,17 +1,24 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useSyncExternalStore } from "react";
 import { useI18n } from "@/contexts/I18nContext";
 import { streets } from "@/data/streets";
 import QRCode from "qrcode";
 
+// 配信元のオリジンは実行中に変わらないので購読は何もしない。
+// プリレンダリング時は window が無いため、空文字を返してハイドレーション後に差し替える
+const subscribeOrigin = () => () => {};
+const getBaseUrl = () =>
+  `${window.location.origin}${process.env.NEXT_PUBLIC_BASE_PATH || ""}`;
+const getServerBaseUrl = () => "";
+
 export function AdminQrCodes() {
   const { t } = useI18n();
-  const [baseUrl, setBaseUrl] = useState("");
-
-  useEffect(() => {
-    setBaseUrl(`${window.location.origin}${process.env.NEXT_PUBLIC_BASE_PATH || ""}`);
-  }, []);
+  const baseUrl = useSyncExternalStore(
+    subscribeOrigin,
+    getBaseUrl,
+    getServerBaseUrl
+  );
 
   return (
     <div className="space-y-4">

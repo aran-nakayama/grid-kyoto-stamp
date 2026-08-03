@@ -6,9 +6,7 @@ export const en: TranslationDict = {
     "GRID KYOTO — Kyoto's city culture festival. A stamp rally across five themed streets.",
   nav: {
     stamps: "Stamps",
-    streets: "Streets",
     scan: "Scan",
-    map: "Venue Map",
   },
   home: {
     title: "GRID KYOTO",
@@ -21,14 +19,14 @@ export const en: TranslationDict = {
       "You've visited all five streets! Congratulations!",
   },
   streets: {
-    title: "Streets",
-    subtitle: "Five themed streets",
     themeLabel: "Theme",
     acquired: "Stamp collected",
     notAcquired: "Not collected",
     acquiredDesc: "You've already collected this street's stamp",
     notAcquiredDesc:
       "Scan the QR code on the street to collect its stamp",
+    designLabel: "Stamp design",
+    changeDesign: "Tap to change the design",
   },
   scan: {
     title: "QR Scan",
@@ -37,8 +35,12 @@ export const en: TranslationDict = {
     cameraError: "Camera Error",
     cameraPermission:
       "Could not start the camera. Please allow camera access.",
+    cameraUnavailable:
+      "The camera is not available over this connection. Browsers only allow it on secure (https) connections — please use the published site.",
   },
   stamp: {
+    choose: "Which stamp would you like?",
+    chooseDesc: "Tap a design to collect it (you can change it later)",
     checking: "Checking...",
     success: "Stamp collected!",
     successDesc: "Added to your stamp card!",
@@ -49,20 +51,13 @@ export const en: TranslationDict = {
     backToTop: "Back to top",
     redirecting: "Redirecting to your stamp card in 3 seconds...",
   },
-  map: {
-    title: "Venue Map",
-    subtitle: "Kyoto City Hall Front Plaza & Zest Oike",
-    venuePlaza: "Kyoto City Hall Front Plaza",
-    venuePlazaDesc: "Main venue — the five streets",
-    venueZest: "Zest Oike (underground mall)",
-    venueZestDesc: "Venue",
-  },
   admin: {
     title: "Admin Panel",
     login: "Admin Login",
     password: "Password",
     loginButton: "Log in",
     wrongPassword: "Incorrect password",
+    loginError: "Login failed. Please reload the page and try again.",
     logout: "Log out",
     qrCodes: "Street QR Codes",
     generate: "Generate",

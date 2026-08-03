@@ -1,8 +1,10 @@
 "use client";
 
 import { Street } from "@/lib/types";
-import { streetText } from "@/data/streets";
+import { findDesign, streetText } from "@/data/streets";
 import { useI18n } from "@/contexts/I18nContext";
+import { useStamps } from "@/hooks/useStamps";
+import { StampFace } from "./StampFace";
 
 interface StreetDetailModalProps {
   street: Street;
@@ -16,7 +18,9 @@ export function StreetDetailModal({
   onClose,
 }: StreetDetailModalProps) {
   const { t, locale } = useI18n();
+  const { designIdOf, changeDesign } = useStamps();
   const text = streetText(street, locale);
+  const selectedId = findDesign(street, designIdOf(street.id)).id;
 
   return (
     <div
@@ -44,18 +48,50 @@ export function StreetDetailModal({
 
         <p className="text-sm leading-relaxed">{text.description}</p>
 
-        <div
-          className={`rounded-xl p-4 text-center text-sm ${
-            acquired
-              ? "bg-green-50 text-green-800 border border-green-200"
-              : "bg-stamp-empty/50 text-muted border border-border"
-          }`}
-        >
-          <p className="font-bold mb-1">
-            {acquired ? `✅ ${t.streets.acquired}` : t.streets.notAcquired}
-          </p>
-          <p>{acquired ? t.streets.acquiredDesc : t.streets.notAcquiredDesc}</p>
-        </div>
+        {acquired ? (
+          <div className="rounded-xl p-4 bg-green-50 border border-green-200 space-y-3">
+            <p className="text-sm font-bold text-green-800 text-center">
+              ✅ {t.streets.acquired}
+            </p>
+            <p className="text-xs text-muted text-center">
+              {t.streets.designLabel}（{t.streets.changeDesign}）
+            </p>
+            <div className="flex justify-center gap-5">
+              {street.designs.map((design) => {
+                const isSelected = design.id === selectedId;
+                return (
+                  <button
+                    key={design.id}
+                    onClick={() => changeDesign(street.id, design.id)}
+                    className="flex flex-col items-center gap-1.5 active:scale-95 transition-transform"
+                  >
+                    <StampFace
+                      design={design}
+                      className={`w-16 h-16 transition-all ${
+                        isSelected
+                          ? "ring-4 ring-offset-2 ring-green-500"
+                          : "opacity-40"
+                      }`}
+                      emojiClassName="text-2xl"
+                    />
+                    <span
+                      className={`text-xs ${
+                        isSelected ? "font-bold" : "text-muted"
+                      }`}
+                    >
+                      {locale === "en" ? design.nameEn : design.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-xl p-4 text-center text-sm bg-stamp-empty/50 text-muted border border-border">
+            <p className="font-bold mb-1">{t.streets.notAcquired}</p>
+            <p>{t.streets.notAcquiredDesc}</p>
+          </div>
+        )}
 
         <button
           onClick={onClose}

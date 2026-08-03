@@ -11,7 +11,7 @@ import { Street } from "@/lib/types";
 export default function Home() {
   const { t } = useI18n();
   const [selectedStreet, setSelectedStreet] = useState<Street | null>(null);
-  const { hasStamp, isLoaded } = useStamps();
+  const { hasStamp } = useStamps();
 
   return (
     <>
@@ -23,7 +23,7 @@ export default function Home() {
       {selectedStreet && (
         <StreetDetailModal
           street={selectedStreet}
-          acquired={isLoaded ? hasStamp(selectedStreet.id) : false}
+          acquired={hasStamp(selectedStreet.id)}
           onClose={() => setSelectedStreet(null)}
         />
       )}

@@ -5,9 +5,7 @@ export interface TranslationDict {
   siteDescription: string;
   nav: {
     stamps: string;
-    streets: string;
     scan: string;
-    map: string;
   };
   home: {
     title: string;
@@ -18,14 +16,15 @@ export interface TranslationDict {
     complete: string;
     completeMessage: string;
   };
+  /** スタンプ詳細（ストリート情報）で使う文言 */
   streets: {
-    title: string;
-    subtitle: string;
     themeLabel: string;
     acquired: string;
     notAcquired: string;
     acquiredDesc: string;
     notAcquiredDesc: string;
+    designLabel: string;
+    changeDesign: string;
   };
   scan: {
     title: string;
@@ -33,8 +32,11 @@ export interface TranslationDict {
     instruction: string;
     cameraError: string;
     cameraPermission: string;
+    cameraUnavailable: string;
   };
   stamp: {
+    choose: string;
+    chooseDesc: string;
     checking: string;
     success: string;
     successDesc: string;
@@ -45,20 +47,13 @@ export interface TranslationDict {
     backToTop: string;
     redirecting: string;
   };
-  map: {
-    title: string;
-    subtitle: string;
-    venuePlaza: string;
-    venuePlazaDesc: string;
-    venueZest: string;
-    venueZestDesc: string;
-  };
   admin: {
     title: string;
     login: string;
     password: string;
     loginButton: string;
     wrongPassword: string;
+    loginError: string;
     logout: string;
     qrCodes: string;
     generate: string;

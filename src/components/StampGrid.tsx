@@ -12,7 +12,7 @@ interface StampGridProps {
 }
 
 export function StampGrid({ onSelectStreet }: StampGridProps) {
-  const { hasStamp, progress, isComplete, isLoaded } = useStamps();
+  const { hasStamp, designIdOf, progress, isComplete } = useStamps();
   const { t } = useI18n();
 
   return (
@@ -34,7 +34,8 @@ export function StampGrid({ onSelectStreet }: StampGridProps) {
           <StampSlot
             key={street.id}
             street={street}
-            acquired={isLoaded ? hasStamp(street.id) : false}
+            acquired={hasStamp(street.id)}
+            designId={designIdOf(street.id)}
             onSelect={onSelectStreet}
           />
         ))}
