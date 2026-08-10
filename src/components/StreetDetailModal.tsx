@@ -54,7 +54,8 @@ export function StreetDetailModal({
               ✅ {t.streets.acquired}
             </p>
             <p className="text-xs text-muted text-center">
-              {t.streets.designLabel}（{t.streets.changeDesign}）
+              {t.streets.designLabel}
+              {street.designs.length > 1 && `（${t.streets.changeDesign}）`}
             </p>
             <div className="flex justify-center gap-5">
               {street.designs.map((design) => {

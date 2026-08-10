@@ -113,6 +113,10 @@ export function startClaim(token: string): void {
     outcome = "invalid";
   } else if (hasStamp(street.id)) {
     outcome = "already";
+  } else if (street.designs.length === 1) {
+    // 絵柄が1種類しかないストリートは選ぶ意味がないので、そのまま押す
+    addStamp(street.id, street.designs[0].id);
+    outcome = "success";
   } else {
     outcome = "choosing";
   }
