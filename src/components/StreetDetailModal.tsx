@@ -31,22 +31,7 @@ export function StreetDetailModal({
         className="bg-card w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-6 space-y-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-4">
-          <div
-            className="w-14 h-14 rounded-full flex items-center justify-center text-2xl text-white shrink-0"
-            style={{ backgroundColor: street.color }}
-          >
-            {street.emoji}
-          </div>
-          <div>
-            <h2 className="text-lg font-bold">{text.name}</h2>
-            <p className="text-sm text-muted">
-              {t.streets.themeLabel}: {text.theme}
-            </p>
-          </div>
-        </div>
-
-        <p className="text-sm leading-relaxed">{text.description}</p>
+        <h2 className="text-lg font-bold text-center">{text.name}</h2>
 
         {acquired ? (
           <div className="rounded-xl p-4 bg-green-50 border border-green-200 space-y-3">

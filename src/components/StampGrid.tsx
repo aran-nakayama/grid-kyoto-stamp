@@ -26,8 +26,8 @@ export function StampGrid({ onSelectStreet }: StampGridProps) {
       {/* 枠(4px)と余白の合計が広すぎると3列に収まらなくなるので p-3 にしている */}
       <div className="bg-gradient-to-b from-white to-[#fff7ec] rounded-[2rem] border-4 border-primary/15 shadow-lg p-3">
         <div className="text-center pb-3 mb-5 border-b-2 border-dashed border-primary/20">
-          <p className="text-base font-bold text-primary">
-            🎃 {t.home.sheetTitle} 🦇
+          <p className="text-sm font-bold text-primary tracking-widest">
+            {t.home.sheetTitle}
           </p>
         </div>
 
@@ -55,7 +55,8 @@ export function StampGrid({ onSelectStreet }: StampGridProps) {
             <p className="text-lg font-bold text-primary">
               {t.progress.complete}
             </p>
-            <p className="text-sm text-muted mt-1">
+            {/* 文中の改行をそのまま反映する */}
+            <p className="text-sm text-muted mt-1 whitespace-pre-line">
               {t.progress.completeMessage}
             </p>
             <p className="text-xs text-primary/70 font-bold mt-2">

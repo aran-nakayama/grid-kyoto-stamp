@@ -10,14 +10,14 @@ export const en: TranslationDict = {
   },
   home: {
     title: "GRID KYOTO",
-    subtitle: "🎃 Kyoto's city culture festival — explore the five streets",
+    subtitle: "Kyoto's city culture festival — explore the five streets",
     sheetTitle: "STAMP SHEET",
   },
   progress: {
     label: "Stamps",
     complete: "Trick or Treat!",
     completeMessage:
-      "You've visited all five streets. Happy Halloween!",
+      "You've visited all five streets.\nHappy Halloween!",
   },
   celebrate: {
     message: "You visited all five streets!",
@@ -26,7 +26,6 @@ export const en: TranslationDict = {
     replay: "Watch again",
   },
   streets: {
-    themeLabel: "Theme",
     acquired: "Stamp collected",
     notAcquired: "Not collected",
     acquiredDesc: "You've already collected this street's stamp",

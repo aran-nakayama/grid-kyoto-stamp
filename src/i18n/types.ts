@@ -26,7 +26,6 @@ export interface TranslationDict {
   };
   /** スタンプ詳細（ストリート情報）で使う文言 */
   streets: {
-    themeLabel: string;
     acquired: string;
     notAcquired: string;
     acquiredDesc: string;

@@ -39,11 +39,10 @@ export function StampSlot({
         <StampFace
           design={design}
           // 傾きは CSS 変数で渡し、ポンと現れるアニメーションの終点にも使う
-          className="w-24 h-24 border-4 border-white shadow-lg stamp-tilt animate-stamp-pop"
+          className="w-24 h-24 border-2 border-white stamp-tilt animate-stamp-pop"
           emojiClassName="text-5xl"
           style={
             {
-              boxShadow: `0 6px 16px -3px ${design.color}80`,
               "--tilt": `${TILT[index % TILT.length]}deg`,
               animationDelay: `${index * 90}ms`,
             } as CSSProperties

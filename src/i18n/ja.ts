@@ -9,14 +9,14 @@ export const ja: TranslationDict = {
   },
   home: {
     title: "GRID KYOTO",
-    subtitle: "🎃 京都まちの文化祭 〜5つのストリートを巡ろう〜",
+    subtitle: "京都まちの文化祭 〜5つのストリートを巡ろう〜",
     sheetTitle: "スタンプシート",
   },
   progress: {
     label: "スタンプ",
     complete: "Trick or Treat！",
     completeMessage:
-      "5つのストリートをすべて巡りました！ハッピーハロウィン！",
+      "5つのストリートをすべて巡りました！\nハッピーハロウィン！",
   },
   celebrate: {
     message: "5つのストリートを ぜんぶまわったね！",
@@ -25,7 +25,6 @@ export const ja: TranslationDict = {
     replay: "もういちど見る",
   },
   streets: {
-    themeLabel: "テーマ",
     acquired: "スタンプ獲得済み",
     notAcquired: "未獲得",
     acquiredDesc: "このストリートのスタンプは獲得済みです",

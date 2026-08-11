@@ -29,7 +29,7 @@ export function StampFace({
 }: StampFaceProps) {
   return (
     <div
-      className={`relative rounded-full overflow-hidden flex items-center justify-center ${className}`}
+      className={`relative rounded-full overflow-hidden flex items-center justify-center stamp-3d ${className}`}
       style={{ backgroundColor: design.color, ...style }}
     >
       {design.image ? (
@@ -43,6 +43,11 @@ export function StampFace({
       ) : (
         <span className={emojiClassName}>{design.emoji}</span>
       )}
+      {/* 縁の陰影を重ねて、押された印影らしく見せる */}
+      <span
+        aria-hidden
+        className="absolute inset-0 rounded-full stamp-impression pointer-events-none"
+      />
     </div>
   );
 }

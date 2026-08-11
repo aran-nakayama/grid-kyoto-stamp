@@ -87,10 +87,10 @@ export function CompleteCelebration({ onClose }: CompleteCelebrationProps) {
               >
                 <StampFace
                   design={design}
-                  className="w-16 h-16 border-4 border-white/90 shadow-lg"
-                  emojiClassName="text-3xl"
+                  className="w-24 h-24 border-2 border-white/90"
+                  emojiClassName="text-5xl"
                 />
-                <span className="text-[10px] text-white/80">
+                <span className="text-xs text-white/80">
                   {streetText(street, locale).shortName}
                 </span>
               </div>

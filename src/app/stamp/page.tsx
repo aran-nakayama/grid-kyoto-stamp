@@ -124,12 +124,9 @@ function StampContent() {
                 {/* ふわふわ動かしてタップを誘う。2つの動きをずらして交互に見せる */}
                 <StampFace
                   design={design}
-                  className="w-28 h-28 border-4 border-white shadow-lg animate-soft-float"
+                  className="w-28 h-28 border-2 border-white animate-soft-float"
                   emojiClassName="text-6xl"
-                  style={{
-                    boxShadow: `0 10px 18px -4px ${design.color}80`,
-                    animationDelay: design.id === "b" ? "1.2s" : "0s",
-                  }}
+                  style={{ animationDelay: design.id === "b" ? "1.2s" : "0s" }}
                 />
                 <span className="text-sm font-medium">
                   {locale === "en" ? design.nameEn : design.name}
@@ -152,11 +149,10 @@ function StampContent() {
             <div className="relative">
               <StampFace
                 design={design}
-                className={`w-28 h-28 border-4 border-white shadow-lg ${
+                className={`w-28 h-28 border-2 border-white ${
                   result === "success" ? "animate-stamp-press" : ""
                 }`}
                 emojiClassName="text-6xl"
-                style={{ boxShadow: `0 10px 20px -4px ${design.color}80` }}
               />
               {result === "success" &&
                 SPARKLES.map((s, i) => (

@@ -29,6 +29,27 @@ body {
   color: var(--color-foreground);
 }
 
+/* --- スタンプの質感 -------------------------------------------------- */
+
+/*
+ * 台紙に「押された」印影に見せる。
+ * 浮き上がる影や光沢をつけるとボタンやシールに見えてしまうので、
+ * 影は紙に接している程度に抑え、縁がわずかに沈み込んだ表現にする。
+ */
+.stamp-3d {
+  box-shadow:
+    0 1px 1px rgba(42, 26, 53, 0.12),
+    0 2px 5px -1px rgba(42, 26, 53, 0.16);
+}
+
+/* 絵柄の上に重ねる、ごく薄い縁の陰影。押し込まれた質感を出す */
+.stamp-impression {
+  box-shadow:
+    inset 0 0 0 1px rgba(42, 26, 53, 0.1),
+    inset 0 2px 5px rgba(42, 26, 53, 0.18),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.22);
+}
+
 /* --- 子ども向けの動き ------------------------------------------------ */
 
 /* スタンプ帳に並ぶスタンプ。--tilt の傾きを保ったままポンと現れる */
@@ -164,8 +185,9 @@ body {
   }
 }
 
+/* backwards が無いと、降り始めるまでの待機中に画面上端へ溜まって見えてしまう */
 .animate-candy-fall {
-  animation: candy-fall var(--dur, 3.4s) linear infinite;
+  animation: candy-fall var(--dur, 3.4s) linear infinite backwards;
 }
 
 /* コンプリート画面: 大きな見出しがドンと出る */
